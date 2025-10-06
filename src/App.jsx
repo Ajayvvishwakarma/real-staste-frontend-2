@@ -63,7 +63,7 @@ import PlotsLandSection from "./Components/PlotsLandSection.jsx";
 import InsightsRoutes from "./Components/insights/InsightsRoutes.jsx";
 import InsightsLayout from "./Components/insights/InsightsLayout.jsx";
 import HomeLoanDeals from "./Components/owner/HomeLoanDeals.jsx";
-import BuildersSection from "./Components/owner/BuildersSection.jsx";
+import BuildersSectionIntegration from "./Components/owner/BuildersSection_Test.jsx";
 import DealerServices from "./Components/owner/DealerServices.jsx";
 function App() {
   const [selectedCity, setSelectedCity] = React.useState("India");
@@ -193,7 +193,7 @@ function App() {
               element={
                 <>
                   
-                  <BuildersSection />
+                  <BuildersSectionIntegration />
                   <UpperFooter />
                   <LowerFooter />
                 </>
