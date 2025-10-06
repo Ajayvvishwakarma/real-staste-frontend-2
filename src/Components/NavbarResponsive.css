@@ -1,0 +1,162 @@
+/* Navbar Responsive Custom Styles */
+
+/* Touch optimization for mobile devices */
+@media (max-width: 768px) {
+  .navbar-responsive {
+    /* Ensure proper touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Better button touch targets */
+  .navbar-responsive button,
+  .navbar-responsive a {
+    min-height: 44px;
+    min-width: 44px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  /* Prevent zoom on input focus */
+  .navbar-responsive input {
+    font-size: 16px;
+  }
+
+  /* Smooth dropdown animations */
+  .navbar-responsive .dropdown-content {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Safe area handling for devices with notches */
+  .navbar-responsive .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Tablet specific optimizations */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .navbar-responsive {
+    /* Optimize for touch on tablets */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tablet touch targets */
+  .navbar-responsive button,
+  .navbar-responsive a {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+
+  /* Tablet dropdown sizing */
+  .navbar-responsive .dropdown-content {
+    max-width: 90vw;
+  }
+}
+
+/* Desktop hover states */
+@media (min-width: 1280px) {
+  .navbar-responsive .dropdown-container:hover .dropdown-content {
+    display: block;
+  }
+
+  .navbar-responsive .dropdown-content {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+}
+
+/* Cross-device improvements */
+.navbar-responsive {
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Better backdrop filter support */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Focus states for accessibility */
+.navbar-responsive button:focus,
+.navbar-responsive a:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Animation improvements */
+.navbar-responsive .transform {
+  transition: transform 0.2s ease;
+}
+
+.navbar-responsive .hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.navbar-responsive .active\:scale-95:active {
+  transform: scale(0.95);
+}
+
+/* Responsive font scaling */
+@media (max-width: 480px) {
+  .navbar-responsive {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .navbar-responsive {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 769px) {
+  .navbar-responsive {
+    font-size: 16px;
+  }
+}
+
+/* Improved scrollbar styling */
+.navbar-responsive::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navbar-responsive::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.navbar-responsive::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.5);
+  border-radius: 2px;
+}
+
+.navbar-responsive::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.7);
+}
+
+/* Dark mode considerations */
+@media (prefers-color-scheme: dark) {
+  .navbar-responsive {
+    /* Ensure proper contrast in dark mode */
+    background-color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .navbar-responsive * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .navbar-responsive {
+    border: 2px solid currentColor;
+  }
+  
+  .navbar-responsive button,
+  .navbar-responsive a {
+    border: 1px solid currentColor;
+  }
+}

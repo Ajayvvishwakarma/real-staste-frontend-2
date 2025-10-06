@@ -1,0 +1,544 @@
+/* DreamHome Mobile Responsive Styles */
+
+/* Global container fixes for mobile */
+.mobile-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Mobile-first approach - Base styles for mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Line clamp utility for text truncation */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Touch optimization for mobile devices */
+@media (max-width: 768px) {
+  .touch-manipulation {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  /* Better spacing for mobile cards */
+  .mobile-card-spacing {
+    margin-bottom: 8px;
+  }
+
+  /* Improved button sizing for mobile */
+  .mobile-button {
+    min-height: 44px;
+    padding: 12px 24px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  /* Section 1: Top section responsive improvements */
+  .dream-home-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 8px;
+  }
+
+  .dream-home-image-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .dream-home-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .dream-home-content {
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .dream-home-heading {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+
+  .dream-home-description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Section 2: Articles section responsive improvements */
+  .articles-container {
+    margin-top: -20px;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: block;
+    width: 100%;
+  }
+
+  .articles-header {
+    text-align: center;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .articles-title {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .articles-subtitle {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+
+  .articles-grid-mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+    width: 100%;
+  }
+
+  .article-card-mobile {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    min-height: 70px;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .article-card-mobile:hover {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .article-image-mobile {
+    width: 60px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .article-content-mobile {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .article-title-mobile {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .article-date-mobile {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+
+  /* Mobile-specific grid improvements */
+  .mobile-articles-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Better mobile typography */
+  .mobile-title {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .mobile-subtitle {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  /* Mobile tab improvements */
+  .mobile-tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 8px;
+    width: 100%;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .mobile-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-tab-button {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    margin-right: 8px;
+    min-width: max-content;
+    font-size: 14px;
+    white-space: nowrap;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  /* Fix for mobile container overflow */
+  .mobile-container-fix {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Better mobile spacing */
+  .mobile-spacing {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Small mobile devices (320px and up) */
+@media (max-width: 480px) {
+  .extra-small-mobile {
+    padding: 12px;
+  }
+
+  .extra-small-mobile-text {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .extra-small-mobile-title {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+
+  /* Tighter spacing for very small screens */
+  .extra-small-spacing {
+    margin-bottom: 12px;
+  }
+
+  /* Smaller images for very small screens */
+  .extra-small-image {
+    width: 48px;
+    height: 36px;
+  }
+
+  /* Extra small mobile optimizations for both sections */
+  .dream-home-image {
+    height: 180px;
+  }
+
+  .dream-home-heading {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .dream-home-description {
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+
+  .articles-container {
+    margin-top: -15px;
+    padding: 12px;
+  }
+
+  .articles-title {
+    font-size: 1rem;
+  }
+
+  .articles-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .article-card-mobile {
+    padding: 10px;
+    gap: 10px;
+    min-height: 60px;
+  }
+
+  .article-image-mobile {
+    width: 50px;
+    height: 38px;
+  }
+
+  .article-title-mobile {
+    font-size: 0.8rem;
+  }
+
+  .article-date-mobile {
+    font-size: 0.7rem;
+  }
+
+  /* Button improvements for extra small screens */
+  .mobile-button {
+    min-height: 40px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Tab improvements for extra small screens */
+  .mobile-tab-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+}
+
+/* Tablet optimizations (sm breakpoint) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .tablet-optimization {
+    padding: 16px 20px;
+  }
+
+  .tablet-button {
+    min-width: 140px;
+    padding: 12px 20px;
+  }
+
+  .tablet-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Tablet specific improvements for both sections */
+  .dream-home-image {
+    height: 240px;
+  }
+
+  .dream-home-content {
+    padding: 0 20px;
+  }
+
+  .dream-home-heading {
+    font-size: 1.4rem;
+    margin-bottom: 14px;
+  }
+
+  .dream-home-description {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    max-width: 85%;
+  }
+
+  .articles-container {
+    margin-top: -30px;
+    padding: 20px;
+  }
+
+  .articles-title {
+    font-size: 1.3rem;
+  }
+
+  .articles-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .articles-grid-mobile {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .article-card-mobile {
+    padding: 14px;
+    gap: 14px;
+    min-height: 80px;
+  }
+
+  .article-image-mobile {
+    width: 65px;
+    height: 50px;
+  }
+
+  .article-title-mobile {
+    font-size: 0.9rem;
+  }
+
+  .article-date-mobile {
+    font-size: 0.8rem;
+  }
+
+  /* Tab improvements for tablets */
+  .mobile-tab-button {
+    padding: 8px 14px;
+    font-size: 14px;
+    min-height: 42px;
+  }
+}
+
+/* Ensure existing md, lg, xl layouts are preserved */
+@media (min-width: 768px) {
+  /* All existing styles for md and larger screens remain unchanged */
+  .preserve-layout {
+    position: relative; /* Placeholder to maintain existing layout */
+  }
+}
+
+/* Focus states for accessibility */
+.touch-manipulation:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Better hover states for touch devices */
+@media (hover: hover) {
+  .hover-effects:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Dark mode considerations for mobile */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  .mobile-dark-mode {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .high-contrast-mobile {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-animations * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Safe area handling for devices with notches */
+@media (max-width: 768px) {
+  .safe-area-mobile {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Additional responsive utilities */
+  .responsive-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 12px;
+  }
+
+  .responsive-section {
+    margin-bottom: 20px;
+  }
+
+  .responsive-heading {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .responsive-text-center {
+    text-align: center;
+  }
+
+  .responsive-grid-1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .responsive-flex-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .responsive-button {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* Loading and transition improvements */
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Performance optimizations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  /* Mobile-first image optimization */
+  .responsive-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.1), transparent);
+  }
+}

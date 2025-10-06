@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Validation Test</title>
+</head>
+<body>
+    <h2>Profile Validation Test</h2>
+    <p>Open browser console and navigate to your Profile page to see validation behavior.</p>
+    
+    <script>
+        // This script can help debug validation issues
+        console.log('Validation Test Script Loaded');
+        
+        // Check localStorage for authentication
+        const token = localStorage.getItem('access_token');
+        console.log('Auth Token Present:', !!token);
+        
+        if (token) {
+            console.log('Token found - user should be authenticated');
+        } else {
+            console.log('No token found - user needs to login first');
+        }
+        
+        // Listen for form submission events
+        document.addEventListener('submit', function(e) {
+            console.log('Form submission detected:', e.target);
+        });
+        
+        // Function to check validation state
+        window.checkValidation = function() {
+            const inputs = document.querySelectorAll('input[required], input');
+            console.log('Form inputs found:', inputs.length);
+            
+            inputs.forEach(input => {
+                console.log(`${input.name || input.id}: "${input.value}" (required: ${input.required})`);
+            });
+        };
+        
+        console.log('Use checkValidation() in console to inspect form state');
+    </script>
+</body>
+</html>
