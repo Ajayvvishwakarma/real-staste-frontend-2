@@ -46,7 +46,7 @@ import RentProperty_header from "./Components/RentProperty_header";
 import PropertyStatsBar from "./Components/PropertyStatusBar";
 import PropertyListingPage from "./Components/PropertyListingPage";
 import Buy_FAQ_Section from "./Components/Buy_FAQ_Section";
-import PostPropertyHero from "./Components/postproperty/PostPropertyHero";
+// import PostPropertyHeroIntegration from "./Components/postproperty/PostPropertyHero";
 import PostPropertyOriginal from "./Components/postproperty/PostPropertyOriginal";
 import How_It_Works from "./Components/postproperty/How_It_Works";
 import RealEstate_choose from "./Components/postproperty/RealEstate_choose";
