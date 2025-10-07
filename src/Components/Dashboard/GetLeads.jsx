@@ -220,7 +220,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import GetLeads from './GetLeads';
 import Dashboard from './Dashboard';
-import LoginPage from './LoginPage';
+import LoginFormIntegration from '../postproperty/Login_Form';
 
 const isAuthenticated = () => {
   return !!localStorage.getItem('access_token');
@@ -242,7 +242,7 @@ const GetLeadsIntegration = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginFormIntegration />} />
         <Route
           path="/dashboard"
           element={

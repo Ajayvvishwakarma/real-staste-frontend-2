@@ -287,8 +287,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 
-// Replace with your backend API endpoint for registration
-const API_URL = 'http://localhost:8000/api/auth/register';
+// Using proxy configuration from vite.config.js
+const API_URL = '/api/auth/register';
 
 const validateEmail = (email) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
 const validateMobile = (mobile) => /^[6-9]\d{9}$/.test(mobile);

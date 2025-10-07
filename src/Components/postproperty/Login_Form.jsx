@@ -349,7 +349,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
-const API_URL = "http://localhost:8000/api/auth/login"; // Replace with your backend endpoint
+const API_URL = "/api/auth/login"; // Using relative URL to work with Vite proxy
 
 const validateEmail = (email) => {
   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -442,6 +442,7 @@ const LoginFormIntegration = () => {
         const resData = await response.json();
         if (!response.ok) throw new Error(resData.detail || "Login failed. Please check your credentials.");
         if (resData.access_token) {
+          console.log("Login successful, setting localStorage...");
           localStorage.setItem("access_token", resData.access_token);
           localStorage.setItem("token_type", resData.token_type || "bearer");
           localStorage.setItem("user_info", JSON.stringify(resData.user));
@@ -450,11 +451,17 @@ const LoginFormIntegration = () => {
           localStorage.setItem("userRole", resData.user.role);
           localStorage.setItem("authToken", resData.access_token);
           localStorage.setItem("userName", resData.user.full_name || email.split("@")[0]);
-        }
-        if (redirectPath === "/post-property") {
-          navigate("/post-property?loginSuccess=true");
-        } else {
-          navigate(redirectPath);
+          
+          console.log("Redirecting to:", redirectPath);
+          
+          // Try immediate navigation first
+          if (redirectPath === "/post-property") {
+            console.log("Navigating to post-property...");
+            navigate("/post-property?loginSuccess=true", { replace: true });
+          } else {
+            console.log("Navigating to dashboard...");
+            navigate(redirectPath, { replace: true });
+          }
         }
       } catch (error) {
         setLoginError(
