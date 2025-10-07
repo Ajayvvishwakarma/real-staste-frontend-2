@@ -325,10 +325,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
-// Replace with your backend API endpoint for testimonials and benefits if needed
-const BENEFITS_API_URL = "http://localhost:8000/api/real-estate-benefits";
-const TESTIMONIALS_API_URL = "http://localhost:8000/api/real-estate-testimonials";
+import { apiService } from "../services/apiService.js";
 
 const RealStateBlogIntegration = () => {
   const sliderRef = useRef(null);
@@ -336,146 +333,21 @@ const RealStateBlogIntegration = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch benefits and testimonials from backend, fallback to static data if needed
+    // Fetch benefits and testimonials from backend, fallback to static data if needed
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [benRes, testRes] = await Promise.all([
-          fetch(BENEFITS_API_URL),
-          fetch(TESTIMONIALS_API_URL),
+        const [benefitsData, testimonialsData] = await Promise.all([
+          apiService.getRealEstateBenefits(),
+          apiService.getRealEstateTestimonials(),
         ]);
-        let benefitsData = [];
-        let testimonialsData = [];
-        if (benRes.ok) {
-          benefitsData = await benRes.json();
-        }
-        if (testRes.ok) {
-          testimonialsData = await testRes.json();
-        }
-        // Fallback to static if any are empty
-        setBenefits(
-          benefitsData.length > 0
-            ? benefitsData
-            : [
-                {
-                  id: "01",
-                  title: "Over 12 Lac properties",
-                  desc: "10,000+ properties are added every day",
-                  icon: "🏢",
-                  bgColor: "bg-blue-100",
-                  borderColor: "border-blue-200",
-                  iconBg: "bg-blue-200",
-                },
-                {
-                  id: "02",
-                  title: "Verification by Bhoomi team",
-                  desc: "Photos / Videos and other details are verified on location",
-                  icon: "✅",
-                  bgColor: "bg-green-100",
-                  borderColor: "border-green-200",
-                  iconBg: "bg-green-200",
-                },
-                {
-                  id: "03",
-                  title: "Large user base",
-                  desc: "High active user count and user engagement to find and close deals",
-                  icon: "👥",
-                  bgColor: "bg-purple-100",
-                  borderColor: "border-purple-200",
-                  iconBg: "bg-purple-200",
-                },
-                {
-                  id: "04",
-                  title: "Expert guidance",
-                  desc: "Professional support and guidance throughout your property journey",
-                  icon: "💼",
-                  bgColor: "bg-orange-100",
-                  borderColor: "border-orange-200",
-                  iconBg: "bg-orange-200",
-                },
-                {
-                  id: "05",
-                  title: "Secure transactions",
-                  desc: "Safe and secure payment processing with complete transparency",
-                  icon: "🔒",
-                  bgColor: "bg-red-100",
-                  borderColor: "border-red-200",
-                  iconBg: "bg-red-200",
-                },
-                {
-                  id: "06",
-                  title: "24/7 support",
-                  desc: "Round the clock customer support for all your queries and concerns",
-                  icon: "🕐",
-                  bgColor: "bg-teal-100",
-                  borderColor: "border-teal-200",
-                  iconBg: "bg-teal-200",
-                },
-              ]
-        );
-        setTestimonials(
-          testimonialsData.length > 0
-            ? testimonialsData
-            : [
-                {
-                  name: "Srikanth Malleboina",
-                  role: "Owner, Hyderabad",
-                  message:
-                    "You get an exclusive RM from Bhoomi team who tracks your property closely.",
-                  image: "https://randomuser.me/api/portraits/men/32.jpg",
-                  bgColor: "bg-blue-100",
-                  borderColor: "border-blue-200",
-                },
-                {
-                  name: "Prateek Sengar",
-                  role: "Owner, Delhi",
-                  message:
-                    "Bhoomi has a better response rate compared to any of their competitors.",
-                  image: "https://randomuser.me/api/portraits/men/41.jpg",
-                  bgColor: "bg-green-100",
-                  borderColor: "border-green-200",
-                },
-                {
-                  name: "SOBHA Developers",
-                  role: "Real Estate Company",
-                  message:
-                    "Platform to meet customers and increase revenues with lowest cost.",
-                  image: "https://dummyimage.com/100x100/ccc/000.png&text=SOBHA",
-                  bgColor: "bg-purple-100",
-                  borderColor: "border-purple-200",
-                },
-                {
-                  name: "Neha Sharma",
-                  role: "Tenant, Mumbai",
-                  message:
-                    "Found my perfect rental Home in just a few days thanks to bhoomi.",
-                  image: "https://randomuser.me/api/portraits/women/44.jpg",
-                  bgColor: "bg-orange-100",
-                  borderColor: "border-orange-200",
-                },
-                {
-                  name: "Rajesh Kumar",
-                  role: "Owner, Bangalore",
-                  message:
-                    "Listing my property was super easy and I received genuine leads quickly.",
-                  image: "https://randomuser.me/api/portraits/men/55.jpg",
-                  bgColor: "bg-red-100",
-                  borderColor: "border-red-200",
-                },
-                {
-                  name: "Ananya Verma",
-                  role: "Agent, Pune",
-                  message:
-                    "The platform has helped me connect with serious buyers and grow my business.",
-                  image: "https://randomuser.me/api/portraits/women/65.jpg",
-                  bgColor: "bg-teal-100",
-                  borderColor: "border-teal-200",
-                },
-              ]
-        );
-      } catch (err) {
-        // fallback to static data
+        
+        setBenefits(benefitsData);
+        setTestimonials(testimonialsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Set fallback data
         setBenefits([
           {
             id: "01",
@@ -485,113 +357,14 @@ const RealStateBlogIntegration = () => {
             bgColor: "bg-blue-100",
             borderColor: "border-blue-200",
             iconBg: "bg-blue-200",
-          },
-          {
-            id: "02",
-            title: "Verification by Bhoomi team",
-            desc: "Photos / Videos and other details are verified on location",
-            icon: "✅",
-            bgColor: "bg-green-100",
-            borderColor: "border-green-200",
-            iconBg: "bg-green-200",
-          },
-          {
-            id: "03",
-            title: "Large user base",
-            desc: "High active user count and user engagement to find and close deals",
-            icon: "👥",
-            bgColor: "bg-purple-100",
-            borderColor: "border-purple-200",
-            iconBg: "bg-purple-200",
-          },
-          {
-            id: "04",
-            title: "Expert guidance",
-            desc: "Professional support and guidance throughout your property journey",
-            icon: "💼",
-            bgColor: "bg-orange-100",
-            borderColor: "border-orange-200",
-            iconBg: "bg-orange-200",
-          },
-          {
-            id: "05",
-            title: "Secure transactions",
-            desc: "Safe and secure payment processing with complete transparency",
-            icon: "🔒",
-            bgColor: "bg-red-100",
-            borderColor: "border-red-200",
-            iconBg: "bg-red-200",
-          },
-          {
-            id: "06",
-            title: "24/7 support",
-            desc: "Round the clock customer support for all your queries and concerns",
-            icon: "🕐",
-            bgColor: "bg-teal-100",
-            borderColor: "border-teal-200",
-            iconBg: "bg-teal-200",
-          },
+          }
         ]);
-        setTestimonials([
-          {
-            name: "Srikanth Malleboina",
-            role: "Owner, Hyderabad",
-            message:
-              "You get an exclusive RM from Bhoomi team who tracks your property closely.",
-            image: "https://randomuser.me/api/portraits/men/32.jpg",
-            bgColor: "bg-blue-100",
-            borderColor: "border-blue-200",
-          },
-          {
-            name: "Prateek Sengar",
-            role: "Owner, Delhi",
-            message:
-              "Bhoomi has a better response rate compared to any of their competitors.",
-            image: "https://randomuser.me/api/portraits/men/41.jpg",
-            bgColor: "bg-green-100",
-            borderColor: "border-green-200",
-          },
-          {
-            name: "SOBHA Developers",
-            role: "Real Estate Company",
-            message:
-              "Platform to meet customers and increase revenues with lowest cost.",
-            image: "https://dummyimage.com/100x100/ccc/000.png&text=SOBHA",
-            bgColor: "bg-purple-100",
-            borderColor: "border-purple-200",
-          },
-          {
-            name: "Neha Sharma",
-            role: "Tenant, Mumbai",
-            message:
-              "Found my perfect rental Home in just a few days thanks to bhoomi.",
-            image: "https://randomuser.me/api/portraits/women/44.jpg",
-            bgColor: "bg-orange-100",
-            borderColor: "border-orange-200",
-          },
-          {
-            name: "Rajesh Kumar",
-            role: "Owner, Bangalore",
-            message:
-              "Listing my property was super easy and I received genuine leads quickly.",
-            image: "https://randomuser.me/api/portraits/men/55.jpg",
-            bgColor: "bg-red-100",
-            borderColor: "border-red-200",
-          },
-          {
-            name: "Ananya Verma",
-            role: "Agent, Pune",
-            message:
-              "The platform has helped me connect with serious buyers and grow my business.",
-            image: "https://randomuser.me/api/portraits/women/65.jpg",
-            bgColor: "bg-teal-100",
-            borderColor: "border-teal-200",
-          },
-        ]);
+        setTestimonials([]);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 

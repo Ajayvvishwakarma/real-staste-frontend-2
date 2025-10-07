@@ -293,9 +293,7 @@ import { useParams, useLocation } from "react-router-dom";
 import PropertyListingPage2 from "./PropertyListingPage2";
 import PropertySearchCard from "./PropertySearchCard";
 import PropertyFiltersIntegration from "./PropertyFilters";
-
-// Replace with your backend API endpoint for city/property data
-const API_URL = "http://localhost:8000/api/city-data";
+import { apiService } from "../services/apiService.js";
 
 const ViewMoreResults = () => (
   <div className="mt-8 bg-white rounded-xl w-full shadow border border-gray-200 p-6">
@@ -338,14 +336,19 @@ const PropertyListingPageIntegration = ({ propertyType = 'buy' }) => {
 
   // Fetch city/property data from backend
   useEffect(() => {
-    setLoading(true);
-    fetch(`${API_URL}?city=${encodeURIComponent(cityName)}&type=${actualPropertyType}`)
-      .then(res => res.json())
-      .then(data => {
+    const fetchCityData = async () => {
+      setLoading(true);
+      try {
+        const data = await apiService.getCityData(cityName);
         setCityData(data);
+      } catch (error) {
+        console.error('Failed to fetch city data:', error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchCityData();
   }, [cityName, actualPropertyType]);
 
   // Parse URL search parameters for filters

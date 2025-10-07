@@ -139,9 +139,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Replace with your backend API endpoint for city data if needed
-const API_URL = "http://localhost:8000/api/cities";
+import { apiService } from "../services/apiService.js";
 
 // Dummy fallback for city utils if backend is not ready
 const getCityRoute = (city) => `/city/${city.toLowerCase().replace(/\s+/g, "-")}`;
@@ -159,9 +157,7 @@ const PropertyCityIntegration = () => {
     const fetchCities = async () => {
       setLoading(true);
       try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("Failed to fetch cities data.");
-        const data = await res.json();
+        const data = await apiService.getCities();
         setCities(data);
       } catch (err) {
         setError("Error loading cities.");
@@ -251,7 +247,7 @@ const PropertyCityIntegration = () => {
             <span className="relative z-10 inline-block px-2 py-1 text-center rounded-lg text-xs text-white overflow-hidden">
               <span className="absolute inset-0 bg-gradient-to-r from-green-500 via-black to-green-600 animate-gradient-move rounded-full"></span>
               <span className="relative z-10 text-xs text-gray-200">
-                {city.count.toLocaleString()} Properties
+                {(city.count || city.totalProperties || 0).toLocaleString()} Properties
               </span>
             </span>
           </div>

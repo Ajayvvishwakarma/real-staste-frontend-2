@@ -176,9 +176,7 @@
 
 
 import React, { useState, useEffect } from "react";
-
-// Replace with your backend API endpoint for articles if needed
-const API_URL = "http://localhost:8000/api/property-articles";
+import { apiService } from "../services/apiService.js";
 
 const PropertySectionIntegration = () => {
   const [articles, setArticles] = useState([]);
@@ -189,9 +187,7 @@ const PropertySectionIntegration = () => {
     const fetchArticles = async () => {
       setLoading(true);
       try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("Failed to fetch articles.");
-        const data = await res.json();
+        const data = await apiService.getPropertyArticles();
         setArticles(data);
       } catch (err) {
         // Fallback to static data if backend fails

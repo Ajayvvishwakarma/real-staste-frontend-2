@@ -2546,13 +2546,16 @@
 
 // export default CityPageTemplate;
 
+import React from 'react';
 
+const CityPageTemplate = ({ cityName, selectedCity, setSelectedCity }) => {
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">City Page: {cityName || selectedCity || 'Unknown City'}</h1>
+      <p>This is a placeholder for the city page template.</p>
+      <p>The original component is commented out and needs to be restored.</p>
+    </div>
+  );
+};
 
-
-
-
-
-
-
-
-
+export default CityPageTemplate;

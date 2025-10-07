@@ -287,11 +287,17 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-
-// Replace with your backend API endpoint for fetching properties
-const API_URL = "http://localhost:8000/api/properties";
+import { apiService } from "../services/apiService.js";
 
 const FeaturedPropertyAgentIntegration = ({ city }) => {
+  // Helper function to determine columns based on screen width
+  const getColumnsForWidth = (width) => {
+    if (width >= 1280) return 4;
+    if (width >= 1024) return 3;
+    if (width >= 768) return 2;
+    return 1;
+  };
+
   const [properties, setProperties] = useState([]);
   const [columns, setColumns] = useState(() =>
     typeof window !== "undefined" ? getColumnsForWidth(window.innerWidth) : 4
@@ -308,16 +314,11 @@ const FeaturedPropertyAgentIntegration = ({ city }) => {
       setLoading(true);
       setError("");
       try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch properties.");
-        }
-
-        const data = await response.json();
+        const data = await apiService.getProperties();
         setProperties(data);
       } catch (error) {
         setError(error.message);
+        setProperties([]); // Set empty array as fallback
       } finally {
         setLoading(false);
       }
@@ -346,13 +347,6 @@ const FeaturedPropertyAgentIntegration = ({ city }) => {
 
   const goToNext = () => {
     setStartIdx((prev) => (prev + 1) % properties.length);
-  };
-
-  const getColumnsForWidth = (width) => {
-    if (width >= 1280) return 4;
-    if (width >= 1024) return 3;
-    if (width >= 768) return 2;
-    return 1;
   };
 
   const renderSlider = () => {

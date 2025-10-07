@@ -289,9 +289,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-
-// Replace with your backend API endpoint for project data if needed
-const API_URL = "http://localhost:8000/api/real-estate-projects";
+import { apiService } from "../services/apiService.js";
 
 const RealStateProjectIntegration = () => {
   const [projects, setProjects] = useState([]);
@@ -303,9 +301,7 @@ const RealStateProjectIntegration = () => {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("Failed to fetch projects.");
-        const data = await res.json();
+        const data = await apiService.getRealEstateProjects();
         setProjects(data);
       } catch (err) {
         // Fallback to static list if backend fails
