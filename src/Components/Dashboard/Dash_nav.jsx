@@ -332,12 +332,12 @@ const DashNavIntegration = ({ userInfo, onChangePasswordClick }) => {
               >
                 <div className="h-8 w-8 bg-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-medium">
-                    {user.name.split(' ').map(n => n[0]).join('')}
+                    {user?.name ? user.name.split(' ').map(n => n[0]).join('') : 'U'}
                   </span>
                 </div>
                 <div className="hidden md:block text-left">
-                  <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                  <div className="text-xs text-gray-500">{user.email}</div>
+                  <div className="text-sm font-medium text-gray-900">{user?.name || 'User'}</div>
+                  <div className="text-xs text-gray-500">{user?.email || 'user@example.com'}</div>
                 </div>
                 <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

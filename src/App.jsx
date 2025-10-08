@@ -1,8 +1,8 @@
 ﻿import Login_Form from "./Components/postproperty/Login_Form";
 import UserRegister from "./Components/postproperty/UserRegister.jsx";
 import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
-import Dashboard from "./Components/Dashboard/Dashboard";
 import Post_Property from "./Components/Dashboard/Post_Property";
+import Dashboard from "./Components/Dashboard/Dashboard";
 import { AdminRoutes } from "./Components/Admin_Pannel";
 import Buyer_Guide from "./Components/News/Buyer_Guide.jsx";
 import Sales_enguiry_Navbar from "./Components/sales_enquiry/Sales_enguiry_Navbar";

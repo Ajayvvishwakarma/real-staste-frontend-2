@@ -440,27 +440,31 @@ const LoginFormIntegration = () => {
           }),
         });
         const resData = await response.json();
+        console.log("Backend response:", resData);
+        
         if (!response.ok) throw new Error(resData.detail || "Login failed. Please check your credentials.");
-        if (resData.access_token) {
+        
+        // Handle both access_token and token fields from backend
+        if (resData.success && (resData.access_token || resData.token)) {
           console.log("Login successful, setting localStorage...");
-          localStorage.setItem("access_token", resData.access_token);
+          const token = resData.access_token || resData.token;
+          localStorage.setItem("access_token", token);
           localStorage.setItem("token_type", resData.token_type || "bearer");
-          localStorage.setItem("user_info", JSON.stringify(resData.user));
+          localStorage.setItem("user_info", JSON.stringify(resData.user_data || resData.user));
           localStorage.setItem("user_type", userType);
           localStorage.setItem("userEmail", email);
-          localStorage.setItem("userRole", resData.user.role);
-          localStorage.setItem("authToken", resData.access_token);
-          localStorage.setItem("userName", resData.user.full_name || email.split("@")[0]);
+          localStorage.setItem("userRole", (resData.user_data || resData.user)?.role || "user");
+          localStorage.setItem("authToken", token);
+          localStorage.setItem("userName", (resData.user_data || resData.user)?.full_name || email.split("@")[0]);
           
-          console.log("Redirecting to:", redirectPath);
-          
-          // Try immediate navigation first
+          // Always use React Router navigation to stay on correct port
+          console.log("Login successful! Navigating to:", redirectPath);
           if (redirectPath === "/post-property") {
             console.log("Navigating to post-property...");
             navigate("/post-property?loginSuccess=true", { replace: true });
           } else {
             console.log("Navigating to dashboard...");
-            navigate(redirectPath, { replace: true });
+            navigate("/dashboard", { replace: true });
           }
         }
       } catch (error) {
