@@ -603,7 +603,7 @@ const mockLogout = () => {
 //           </div>
 //           <h3 className="font-semibold text-gray-800 mb-2">See responses on the go</h3>
 //           <p className="text-gray-600 text-sm mb-4">On Bhoomi The Real Estate mobile app</p>
-//           <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors">
+//         <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors">
 //             Get mobile app
 //           </button>
 //         </div>
@@ -684,6 +684,8 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  const handleDashboardClick = () => setCurrentView("dashboard");
+
   const renderStandardLayout = (content) => (
     <div className="min-h-screen bg-gray-100 flex">
       <aside className="w-64 bg-slate-700 text-white shadow-lg fixed left-0 top-0 h-full z-40">
@@ -748,11 +750,11 @@ const Dashboard = () => {
   }
 
   if (currentView === "all-products") {
-    return renderStandardLayout(<AllProducts />);
+    return renderStandardLayout(<AllProducts onBackToDashboard={handleDashboardClick} />);
   }
 
   if (currentView === "emailers") {
-    return renderStandardLayout(<EMailers />);
+    return renderStandardLayout(<EMailers onBackToDashboard={handleDashboardClick} />);
   }
 
   if (currentView === "profile") {

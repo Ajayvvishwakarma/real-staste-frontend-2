@@ -199,6 +199,7 @@ const AllProductsIntegration = ({ onBackToDashboard }) => {
   const [error, setError] = useState('');
   const [filterType, setFilterType] = useState('All Products');
   const [filterStatus, setFilterStatus] = useState('All Status');
+  const [activeTab, setActiveTab] = useState('all-products');
 
   // Live clock
   useEffect(() => {
@@ -266,9 +267,21 @@ const AllProductsIntegration = ({ onBackToDashboard }) => {
             </button>
             <h2 className="text-lg font-semibold mb-4 text-center lg:text-left">All Products</h2>
             <nav className="space-y-2">
-              <button className="w-full text-left px-3 py-2 rounded hover:bg-slate-600 transition-colors">Active Products</button>
-              <button className="w-full text-left px-3 py-2 rounded hover:bg-slate-600 transition-colors">Inactive Products</button>
-              <button className="w-full text-left px-3 py-2 rounded hover:bg-slate-600 transition-colors">Product History</button>
+              <button
+                onClick={() => setActiveTab('active-products')}
+                className={`w-full text-left px-3 py-2 rounded transition-colors ${activeTab === 'active-products' ? 'bg-slate-600 text-white' : 'hover:bg-slate-600 text-white/90'}`}>
+                Active Products
+              </button>
+              <button
+                onClick={() => setActiveTab('inactive-products')}
+                className={`w-full text-left px-3 py-2 rounded transition-colors ${activeTab === 'inactive-products' ? 'bg-slate-600 text-white' : 'hover:bg-slate-600 text-white/90'}`}>
+                Inactive Products
+              </button>
+              <button
+                onClick={() => setActiveTab('product-history')}
+                className={`w-full text-left px-3 py-2 rounded transition-colors ${activeTab === 'product-history' ? 'bg-slate-600 text-white' : 'hover:bg-slate-600 text-white/90'}`}>
+                Product History
+              </button>
             </nav>
           </div>
         </aside>
@@ -282,7 +295,20 @@ const AllProductsIntegration = ({ onBackToDashboard }) => {
                 🟢 Live Updates Active - {currentTime.toLocaleTimeString()}
               </div>
             </div>
-            <div className="p-4 sm:p-6">
+              <div className="p-4 sm:p-6">
+                {/* Simple tab content switcher */}
+                {activeTab === 'all-products' && (
+                  <h3 className="text-lg font-medium mb-4">Showing: All Products</h3>
+                )}
+                {activeTab === 'active-products' && (
+                  <h3 className="text-lg font-medium mb-4">Showing: Active Products</h3>
+                )}
+                {activeTab === 'inactive-products' && (
+                  <h3 className="text-lg font-medium mb-4">Showing: Inactive Products</h3>
+                )}
+                {activeTab === 'product-history' && (
+                  <h3 className="text-lg font-medium mb-4">Showing: Product History</h3>
+                )}
               {/* Filters */}
               <div className="mb-6 flex flex-col sm:flex-row flex-wrap gap-4">
                 <select
