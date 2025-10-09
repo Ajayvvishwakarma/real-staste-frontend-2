@@ -490,6 +490,254 @@
 
 
 
+// import React, { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+
+// // Replace with your backend API endpoint for fetching and managing properties
+// const API_URL = 'http://localhost:8000/api/properties';
+
+// const ManagePropertyIntegration = ({ onBackToDashboard }) => {
+//   const [properties, setProperties] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [selectedProperties, setSelectedProperties] = useState([]);
+//   const [selectAll, setSelectAll] = useState(false);
+//   const [sortBy, setSortBy] = useState('newest');
+//   const [error, setError] = useState('');
+//   const navigate = useNavigate();
+
+//   // Fetch properties from backend
+//   const fetchProperties = async () => {
+//     setLoading(true);
+//     try {
+//       const token = localStorage.getItem('access_token');
+//       if (!token) {
+//         throw new Error('You are not logged in. Please login to view properties.');
+//       }
+
+//       const response = await fetch(API_URL, {
+//         method: 'GET',
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.message || 'Failed to fetch properties.');
+//       }
+
+//       const data = await response.json();
+//       setProperties(data);
+//     } catch (error) {
+//       setError(error.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchProperties();
+//   }, []);
+
+//   const handleSelectAll = () => {
+//     if (selectAll) {
+//       setSelectedProperties([]);
+//     } else {
+//       setSelectedProperties(properties.map((p) => p.id));
+//     }
+//     setSelectAll(!selectAll);
+//   };
+
+//   const handleSelectProperty = (propertyId) => {
+//     if (selectedProperties.includes(propertyId)) {
+//       setSelectedProperties(selectedProperties.filter((id) => id !== propertyId));
+//     } else {
+//       setSelectedProperties([...selectedProperties, propertyId]);
+//     }
+//   };
+
+//   const handleDeleteProperty = async (propertyId) => {
+//     try {
+//       const token = localStorage.getItem('access_token');
+//       if (!token) {
+//         throw new Error('You are not logged in. Please login to delete properties.');
+//       }
+
+//       const response = await fetch(`${API_URL}/${propertyId}`, {
+//         method: 'DELETE',
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.message || 'Failed to delete the property.');
+//       }
+
+//       // Remove the deleted property from the list
+//       setProperties((prev) => prev.filter((property) => property.id !== propertyId));
+//       setSelectedProperties((prev) => prev.filter((id) => id !== propertyId));
+//       alert('Property deleted successfully.');
+//     } catch (error) {
+//       setError(error.message);
+//     }
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+//         <div className="text-center">
+//           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+//           <p className="mt-4 text-gray-600">Loading properties...</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   if (error) {
+//     return (
+//       <div className="bg-gray-50 min-h-screen flex items-center justify-center">
+//         <div className="max-w-md bg-white rounded-lg shadow-md p-6 text-center">
+//           <h3 className="text-lg font-semibold text-red-600">Error</h3>
+//           <p className="text-sm text-gray-600 mt-2">{error}</p>
+//           <button
+//             onClick={fetchProperties}
+//             className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+//           >
+//             Retry
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       <header className="bg-white shadow-sm">
+//         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="flex justify-between items-center py-4">
+//             <h1 className="text-lg sm:text-xl font-semibold text-gray-900">Manage Properties</h1>
+//             <button
+//               onClick={onBackToDashboard}
+//               className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+//             >
+//               ← Back to Dashboard
+//             </button>
+//           </div>
+//         </div>
+//       </header>
+
+//       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+//         <div className="bg-white rounded-lg shadow-sm border mb-6">
+//           <div className="px-6 py-4 border-b">
+//             <div className="flex justify-between items-center">
+//               <div className="flex items-center space-x-4">
+//                 <span className="text-sm text-gray-700 font-medium">
+//                   {properties.length} Properties
+//                 </span>
+//                 <div className="flex items-center space-x-2">
+//                   <input
+//                     type="checkbox"
+//                     checked={selectAll}
+//                     onChange={handleSelectAll}
+//                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+//                   />
+//                   <span className="text-sm text-gray-700">Select All</span>
+//                 </div>
+//                 {selectedProperties.length > 0 && (
+//                   <button
+//                     onClick={() => {
+//                       selectedProperties.forEach((id) => handleDeleteProperty(id));
+//                     }}
+//                     className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-medium"
+//                   >
+//                     Delete Selected
+//                   </button>
+//                 )}
+//               </div>
+//               <div className="flex items-center space-x-4">
+//                 <select
+//                   value={sortBy}
+//                   onChange={(e) => setSortBy(e.target.value)}
+//                   className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+//                 >
+//                   <option value="newest">Newest First</option>
+//                   <option value="oldest">Oldest First</option>
+//                   <option value="price-high">Price: High to Low</option>
+//                   <option value="price-low">Price: Low to High</option>
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="overflow-x-auto">
+//             <table className="w-full">
+//               <thead className="bg-blue-100">
+//                 <tr>
+//                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800">Property Details</th>
+//                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800">Actions</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {Array.isArray(properties) && properties.length > 0 ? (
+//                   properties.map((property) => (
+//                     <tr key={property.id} className="hover:bg-gray-50">
+//                       <td className="px-6 py-4">
+//                         <div className="flex items-center space-x-4">
+//                           <input
+//                             type="checkbox"
+//                             checked={selectedProperties.includes(property.id)}
+//                             onChange={() => handleSelectProperty(property.id)}
+//                           className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+//                         />
+//                         <div className="flex-1">
+//                           <h3 className="text-sm font-medium text-gray-900">{property.title}</h3>
+//                           <p className="text-sm text-gray-500">{property.location}</p>
+//                         </div>
+//                       </div>
+//                     </td>
+//                     <td className="px-6 py-4">
+//                       <button
+//                         onClick={() => navigate(`/edit-property/${property.id}`)}
+//                         className="text-blue-600 hover:text-blue-800 text-sm"
+//                       >
+//                         Edit
+//                       </button>
+//                       <button
+//                         onClick={() => handleDeleteProperty(property.id)}
+//                         className="ml-4 text-red-600 hover:text-red-800 text-sm"
+//                       >
+//                         Delete
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default ManagePropertyIntegration;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -539,6 +787,7 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
     fetchProperties();
   }, []);
 
+  // Select all handler
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedProperties([]);
@@ -548,6 +797,7 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
     setSelectAll(!selectAll);
   };
 
+  // Single select handler
   const handleSelectProperty = (propertyId) => {
     if (selectedProperties.includes(propertyId)) {
       setSelectedProperties(selectedProperties.filter((id) => id !== propertyId));
@@ -556,6 +806,7 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
     }
   };
 
+  // Delete property handler
   const handleDeleteProperty = async (propertyId) => {
     try {
       const token = localStorage.getItem('access_token');
@@ -584,6 +835,7 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
     }
   };
 
+  // Loading UI
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -595,6 +847,7 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
     );
   }
 
+  // Error UI
   if (error) {
     return (
       <div className="bg-gray-50 min-h-screen flex items-center justify-center">
@@ -612,8 +865,10 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
     );
   }
 
+  // Main UI
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
@@ -628,8 +883,10 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
         </div>
       </header>
 
+      {/* Body */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="bg-white rounded-lg shadow-sm border mb-6">
+          {/* Toolbar */}
           <div className="px-6 py-4 border-b">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-4">
@@ -671,6 +928,7 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
             </div>
           </div>
 
+          {/* Property Table */}
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-blue-100">
@@ -679,39 +937,48 @@ const ManagePropertyIntegration = ({ onBackToDashboard }) => {
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800">Actions</th>
                 </tr>
               </thead>
+
               <tbody>
-                {properties.map((property) => (
-                  <tr key={property.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center space-x-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedProperties.includes(property.id)}
-                          onChange={() => handleSelectProperty(property.id)}
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                        />
-                        <div className="flex-1">
-                          <h3 className="text-sm font-medium text-gray-900">{property.title}</h3>
-                          <p className="text-sm text-gray-500">{property.location}</p>
+                {Array.isArray(properties) && properties.length > 0 ? (
+                  properties.map((property) => (
+                    <tr key={property.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center space-x-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedProperties.includes(property.id)}
+                            onChange={() => handleSelectProperty(property.id)}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                          <div className="flex-1">
+                            <h3 className="text-sm font-medium text-gray-900">{property.title}</h3>
+                            <p className="text-sm text-gray-500">{property.location}</p>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => navigate(`/edit-property/${property.id}`)}
-                        className="text-blue-600 hover:text-blue-800 text-sm"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteProperty(property.id)}
-                        className="ml-4 text-red-600 hover:text-red-800 text-sm"
-                      >
-                        Delete
-                      </button>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() => navigate(`/edit-property/${property.id}`)}
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProperty(property.id)}
+                          className="ml-4 text-red-600 hover:text-red-800 text-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="px-6 py-4 text-gray-500 text-center" colSpan="2">
+                      No properties found.
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
