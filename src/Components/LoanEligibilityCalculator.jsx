@@ -316,10 +316,52 @@ const LoanEligibilityCalculatorIntegration = ({ isOpen, onClose }) => {
     }));
   };
 
+  const calculateClientSide = () => {
+    const { income, existingEmi, interestRate, tenure } = formData;
+    const monthlyRate = interestRate / 12 / 100;
+    const months = tenure * 12;
+    
+    // Calculate eligible loan amount (60% of income - existing EMI)
+    const maxMonthlyEMI = (income * 0.6) - existingEmi;
+    
+    // Calculate loan amount using EMI formula: EMI = P * r * (1+r)^n / ((1+r)^n - 1)
+    const eligibleLoan = Math.floor(
+      (maxMonthlyEMI * ((Math.pow(1 + monthlyRate, months) - 1))) / 
+      (monthlyRate * Math.pow(1 + monthlyRate, months))
+    );
+    
+    const totalPayable = maxMonthlyEMI * months;
+    
+    // Generate chart data
+    const chartData = [];
+    let remainingPrincipal = eligibleLoan;
+    
+    for (let year = 1; year <= tenure; year++) {
+      const yearlyInterest = remainingPrincipal * (interestRate / 100);
+      const yearlyPrincipal = (maxMonthlyEMI * 12) - yearlyInterest;
+      remainingPrincipal -= yearlyPrincipal;
+      
+      chartData.push({
+        year: year,
+        principal: Math.max(0, Math.round(yearlyPrincipal)),
+        interest: Math.max(0, Math.round(yearlyInterest)),
+      });
+    }
+    
+    return {
+      eligibleLoan: eligibleLoan > 0 ? eligibleLoan : 0,
+      totalPayable: totalPayable > 0 ? totalPayable : 0,
+      emi: maxMonthlyEMI > 0 ? maxMonthlyEMI : 0,
+      chartData,
+    };
+  };
+
   const handleCalculate = async () => {
     setLoading(true);
     setError("");
+    
     try {
+      // Try to call backend API first
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -329,14 +371,60 @@ const LoanEligibilityCalculatorIntegration = ({ isOpen, onClose }) => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || "Failed to calculate loan eligibility.");
       }
 
       const data = await response.json();
-      setResults(data);
+      
+      console.log("API Response:", data); // Debug log
+      
+      // Transform API response to match expected format
+      let transformedData;
+      
+      // Check if response has maxLoanAmount (backend format)
+      if (data.maxLoanAmount !== undefined) {
+        transformedData = {
+          eligibleLoan: data.maxLoanAmount,
+          emi: data.maxEmi,
+          totalPayable: data.maxEmi * formData.tenure * 12,
+          eligible: data.eligible,
+          maxPropertyValue: data.maxPropertyValue,
+          availableIncome: data.availableIncome,
+        };
+        
+        // Generate chartData if not provided
+        if (!data.chartData) {
+          const clientCalc = calculateClientSide();
+          transformedData.chartData = clientCalc.chartData;
+        } else {
+          transformedData.chartData = data.chartData;
+        }
+        
+        console.log("Transformed Data:", transformedData);
+        setResults(transformedData);
+        return;
+      }
+      
+      // Check if response already has eligibleLoan (expected format)
+      if (data.eligibleLoan !== undefined) {
+        // Ensure chartData exists
+        if (!data.chartData || !Array.isArray(data.chartData) || data.chartData.length === 0) {
+          const clientCalc = calculateClientSide();
+          data.chartData = clientCalc.chartData;
+        }
+        setResults(data);
+        return;
+      }
+      
+      // If neither format matches, use client-side calculation
+      console.warn("Invalid API response format, using client-side calculation");
+      setResults(calculateClientSide());
     } catch (error) {
-      setError(error.message);
+      // Fallback to client-side calculation if backend is not available
+      console.warn("Backend API error, using client-side calculation:", error.message);
+      setError("Using offline calculation mode");
+      setResults(calculateClientSide());
     } finally {
       setLoading(false);
     }
@@ -448,53 +536,55 @@ const LoanEligibilityCalculatorIntegration = ({ isOpen, onClose }) => {
 
           {/* Right Side Results */}
           <div>
-            {results ? (
+            {results && results.eligibleLoan ? (
               <>
                 <h3 className="text-center text-gray-700 mb-4 text-lg font-semibold">
                   Your Estimated Results
                 </h3>
-                <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
-                  <ResponsiveContainer width="100%" height={200}>
-                    <AreaChart data={results.chartData}>
-                      <XAxis dataKey="year" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area
-                        type="monotone"
-                        dataKey="principal"
-                        stackId="1"
-                        stroke="#10B981"
-                        fill="#10B981"
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="interest"
-                        stackId="1"
-                        stroke="#059669"
-                        fill="#059669"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
+                {results.chartData && results.chartData.length > 0 && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+                    <ResponsiveContainer width="100%" height={200}>
+                      <AreaChart data={results.chartData}>
+                        <XAxis dataKey="year" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area
+                          type="monotone"
+                          dataKey="principal"
+                          stackId="1"
+                          stroke="#10B981"
+                          fill="#10B981"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="interest"
+                          stackId="1"
+                          stroke="#059669"
+                          fill="#059669"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
 
                 <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200">
                   <div className="text-center mb-4">
                     <p className="text-gray-600 text-sm">You could borrow up to</p>
                     <h2 className="text-3xl font-bold text-green-600">
-                      ₹ {results.eligibleLoan.toLocaleString("en-IN")}
+                      ₹ {(results.eligibleLoan || 0).toLocaleString("en-IN")}
                     </h2>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="text-center">
                       <p className="text-gray-600 text-sm">Total Payable</p>
                       <h3 className="text-xl font-bold text-gray-800">
-                        ₹ {Math.round(results.totalPayable).toLocaleString("en-IN")}
+                        ₹ {Math.round(results.totalPayable || 0).toLocaleString("en-IN")}
                       </h3>
                     </div>
                     <div className="text-center">
                       <p className="text-gray-600 text-sm">Monthly EMI</p>
                       <h3 className="text-xl font-bold text-gray-800">
-                        ₹ {Math.round(results.emi).toLocaleString("en-IN")}
+                        ₹ {Math.round(results.emi || 0).toLocaleString("en-IN")}
                       </h3>
                     </div>
                   </div>
