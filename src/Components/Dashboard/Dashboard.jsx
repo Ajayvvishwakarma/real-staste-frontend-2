@@ -685,6 +685,8 @@ const Dashboard = () => {
   };
 
   const handleDashboardClick = () => setCurrentView("dashboard");
+  
+  const handleProfileClick = () => setCurrentView("profile");
 
   const renderStandardLayout = (content) => (
     <div className="min-h-screen bg-gray-100 flex">
@@ -728,7 +730,10 @@ const Dashboard = () => {
         </nav>
       </aside>
       <div className="flex-1 ml-64">
-        <Dash_nav userInfo={userInfo} />
+        <Dash_nav 
+          userInfo={userInfo} 
+          onProfileClick={handleProfileClick}
+        />
         <div className="p-6">{content}</div>
       </div>
     </div>

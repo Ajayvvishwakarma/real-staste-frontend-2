@@ -232,7 +232,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Optionally fetch notifications/userInfo from backend APIs if needed
 
-const DashNavIntegration = ({ userInfo, onChangePasswordClick }) => {
+const DashNavIntegration = ({ userInfo, onChangePasswordClick, onProfileClick }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -347,7 +347,14 @@ const DashNavIntegration = ({ userInfo, onChangePasswordClick }) => {
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                   <div className="py-1">
                     <button 
-                      onClick={() => navigate('/dashboard/profile')}
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                        if (onProfileClick) {
+                          onProfileClick();
+                        } else {
+                          navigate('/dashboard/profile');
+                        }
+                      }}
                       className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       <svg className="mr-3 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
